@@ -38,7 +38,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.1
   connectivity_plus: ^2.3.7
+  connectivity: ^3.0.6
   equatable: ^2.0.5
+  orm: ^2.3.0
+  build_runner: ^2.2.1
+  json_serializable: ^6.4.1
 
 dev_dependencies:
   flutter_test:

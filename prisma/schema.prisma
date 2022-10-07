@@ -1,0 +1,71 @@
+generator client {
+  provider        = "prisma-client-dart"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model game {
+  id           String         @id @unique
+  name         String
+  tournament   String
+  weWin        Win
+  ourTeam      Team
+  version      Int            @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime
+  points       points[]
+  rankingPoint rankingPoint[]
+}
+
+model launch {
+  id       String       @id @unique
+  type     launchStatus
+  markerId String
+  points   points       @relation(fields: [markerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model points {
+  id         String   @id @unique
+  isAuto     Boolean
+  pointType  String
+  pointValue Int
+  left       Float?
+  top        Float?
+  gameId     String?
+  game       game?    @relation(fields: [gameId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  launch     launch[]
+}
+
+model rankingPoint {
+  id          String @id @unique
+  type        String
+  numberScore Int
+  minScore    Int
+  maxScore    Int
+  gameId      String
+  game        game   @relation(fields: [gameId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum Team {
+  Red
+  Blue
+}
+
+enum Win {
+  Win
+  Lose
+  Tie
+}
+
+enum launchStatus {
+  GotInUpper
+  GotInLower
+  BounceOut
+  MissClose
+  MissFar
+  NoLaunch
+}

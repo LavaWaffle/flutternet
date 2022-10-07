@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:equatable/equatable.dart';
 
 
@@ -15,7 +16,10 @@ class InternetCubit extends Cubit<InternetState> {
     : super(InternetState.initial()) {
       connectivityStreamSubscription =
         connectivity.onConnectivityChanged.listen((connectivityResult) {
-        if (connectivityResult == ConnectivityResult.wifi) {
+        print(connectivityResult);
+        if (connectivityResult == ConnectivityResult.wifi 
+        // || connectivityResult == ConnectivityResult.ethernet //
+          ) {
           emitInternetState(ConnectionType.wifi);
         } else if (connectivityResult == ConnectivityResult.mobile) {
           emitInternetState(ConnectionType.mobile);
@@ -27,6 +31,7 @@ class InternetCubit extends Cubit<InternetState> {
   }
 
   void emitInternetState(ConnectionType connectionType) {
+    print('emitInternetState: $connectionType');
     emit(InternetState(connectionType: connectionType));
   }
 
